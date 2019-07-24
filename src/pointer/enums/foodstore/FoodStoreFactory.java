@@ -1,31 +1,30 @@
-package pointer.enums;
+package pointer.enums.foodstore;
 
-public class FoodStoreFactory extends AbstractFactory {
-    @Override
-    public Food getFood(String line) {
-        String[] arr = line.split(" ");
+import java.util.Arrays;
 
+public class FoodStoreFactory {
+
+    public Food getFood(String[] arr) {
         if (arr.length == 1){
             return null;
         }
 
         try {
-            FoodType type = FoodType.fromString(arr[0]);
-            String name = arr[1];
-            float price = Float.parseFloat(arr[2]);
-            int qty = Integer.parseInt(arr[3]);
+            FoodType type = FoodType.fromString(arr[1]);
+            String name = arr[2];
+            float price = Float.parseFloat(arr[3]);
+            int qty = Integer.parseInt(arr[4]);
             return new Food(name, type, price, qty);
         } catch (Exception e) {
-            System.out.println("Wrong data for food: '" + line + "'. Should be <food type> <food name> <price(float)> <quantity(int)");
+            System.out.println("Wrong data for food: '" + String.join(" ",arr) + "'. Should be <food type> <food name> <price(float)> <quantity(int)");
         }
 
         return null;
     }
 
-    @Override
     public void updateFood(Food food, String[] arr) {
         if (food == null) {
-            System.out.println("Store has no product with name: "+ arr[1]);
+            System.out.println("foodstore has no product with name: "+ arr[1]);
             return;
         }
 
@@ -43,12 +42,14 @@ public class FoodStoreFactory extends AbstractFactory {
         return;
     }
 
-    @Override
     public Store getStore(String name) {
         if (name != null && name != "") {
+            System.out.println("Food types: " + Arrays.toString(FoodType.values()) +
+                    "\nUse 'done' when finish. \nUse add <food type> <food name> <price> <quantity>:");
             return new Store(name);
         }
 
+        System.exit(0);
         return null;
     }
 }

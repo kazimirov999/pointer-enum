@@ -1,4 +1,4 @@
-package pointer.enums;
+package pointer.enums.foodstore;
 
 public enum FoodType {
     VEGETABLE,

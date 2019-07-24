@@ -1,8 +1,8 @@
-package pointer.enums;
+package pointer.enums.foodstore;
 
 import java.util.ArrayList;
 
-public class Store implements Searchable, Editable{
+public class Store {
     private String name;
     private ArrayList<Food> warehouse = new ArrayList<>();
 

@@ -1,4 +1,4 @@
-package pointer.enums;
+package pointer.enums.foodstore;
 
 public class Food {
     private String name;
@@ -6,11 +6,11 @@ public class Food {
     private int quantity;
     private float price;
 
-    public Food(String n, FoodType type, float price, int qty) {
-        name = n;
+    public Food(String name, FoodType type, float price, int quantity) {
+        this.name = name;
         this.type = type;
         setPrice(price);
-        setQuantity(qty);
+        setQuantity(quantity);
     }
 
     public String getName() {
