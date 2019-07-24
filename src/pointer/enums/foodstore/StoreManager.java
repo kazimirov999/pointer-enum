@@ -19,6 +19,14 @@ public class StoreManager {
         return store;
     }
 
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public void setStore() {
+        this.store = storeFactory.getStore(line);
+    }
+
     public String nextLine() {
         return (line = scanner.nextLine());
     }
@@ -27,29 +35,9 @@ public class StoreManager {
         return line.split(" ");
     }
 
-    public void fillInStore(){
-        CommandFactory commandFactory = new CommandFactory(this);
-        nextLine();
-        Command command = Command.fromString(commandArr()[0]);
-
-        while (Command.DONE != command) {
-            AbstractCommand c = commandFactory.getCommand(command);
-            if (c != null) {
-                c.execute();
-            }
-            nextLine();
-            command = Command.fromString(commandArr()[0]);
-        }
-    }
-
-    public void initStore() {
-        nextLine();
-        Command command = Command.fromString(commandArr()[0]);
-
-        if (Command.EXIT == command) {
-            new ExitCommand(this).execute();
-        } else {
-            store = storeFactory.getStore(line);
+    public void execute(AbstractCommand command) {
+        if (command != null) {
+            command.execute(this);
         }
     }
 

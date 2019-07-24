@@ -4,16 +4,12 @@ import pointer.enums.foodstore.Food;
 import pointer.enums.foodstore.StoreManager;
 
 public class RemoveCommand extends AbstractCommand {
-    public RemoveCommand(StoreManager manager) {
-        super(manager);
-    }
-
     @Override
-    public void execute() {
-        if (!verify())
+    public void execute(StoreManager manager) {
+        if (!verify(manager))
             return;
 
-        Food f = storeManager.removeFood();
+        Food f = manager.removeFood();
         System.out.println(f + " is removed from store.");
     }
 }

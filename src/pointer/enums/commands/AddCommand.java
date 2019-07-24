@@ -4,15 +4,10 @@ import pointer.enums.foodstore.Food;
 import pointer.enums.foodstore.StoreManager;
 
 public class AddCommand extends AbstractCommand {
-
-    public AddCommand(StoreManager manager) {
-        super(manager);
-    }
-
     @Override
-    public void execute() {
-        if (verify()) {
-            Food f = storeManager.addFood();
+    public void execute(StoreManager manager) {
+        if (verify(manager)) {
+            Food f = manager.addFood();
             if (f != null) {
                 System.out.println(f + " is added to store.");
             } else {

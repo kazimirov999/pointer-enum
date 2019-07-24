@@ -6,17 +6,12 @@ import pointer.enums.foodstore.StoreManager;
 import java.util.ArrayList;
 
 public class SearchCommand extends AbstractCommand {
-
-    public SearchCommand(StoreManager manager) {
-        super((manager));
-    }
-
     @Override
-    public void execute() {
-        if (!verify())
+    public void execute(StoreManager manager) {
+        if (!verify(manager))
             return;
 
-        ArrayList<Food> search = storeManager.doSearch();
+        ArrayList<Food> search = manager.doSearch();
 
         if (search.size() > 0) {
             System.out.println("Search result: " + search);

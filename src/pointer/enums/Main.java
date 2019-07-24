@@ -1,8 +1,6 @@
 package pointer.enums;
 
-import pointer.enums.commands.Command;
-import pointer.enums.commands.CommandFactory;
-import pointer.enums.commands.AbstractCommand;
+import pointer.enums.commands.*;
 import pointer.enums.foodstore.StoreManager;
 
 import java.util.Scanner;
@@ -16,32 +14,21 @@ public class Main {
         System.out.println("Type 'exit' for close app");
         System.out.println("Type a store name:");
 
-        storeManager.initStore();
-        storeManager.fillInStore();
+        storeManager.execute(new InitSoreCommand());
+        storeManager.execute(new FillInStoreCommand());
 
         System.out.println("Use add <food type> <food name> <price> <quantity>.\nUse 'search <food type> or <food name> for displaying all food with type.\nUse 'update <food name> <price> <quantity> for changing food'\nUse rm <food name> for removing from the store.");
-        Command command = getNextCommand(storeManager);
+        AbstractCommand command = commandFactory.getNextCommand();
 
         while (true){
-            if (command == Command.DONE) {
-                command = command.EXIT;
-            }
-
-            AbstractCommand c = commandFactory.getCommand(command);
-
-            if (c == null){
+            if (command == null){
                 System.out.println("Command is not recognized.");
-                command = Command.fromString(storeManager.commandArr()[0]);
+                command = commandFactory.getNextCommand();
                 continue;
             }
 
-            c.execute();
-            command = getNextCommand(storeManager);
+            storeManager.execute(command);
+            command = commandFactory.getNextCommand();
         }
-    }
-
-    private static Command getNextCommand(StoreManager storeManager) {
-        storeManager.nextLine();
-        return Command.fromString(storeManager.commandArr()[0]);
     }
 }

@@ -17,13 +17,20 @@ public class CommandFactory {
         }
 
         switch (command) {
-            case ADD: return new AddCommand(storeManager);
-            case SEARCH: return new SearchCommand(storeManager);
-            case UPDATE: return new UpdateCommand(storeManager);
-            case REMOVE: return new RemoveCommand(storeManager);
-            case EXIT: return new ExitCommand(storeManager);
+            case ADD: return new AddCommand();
+            case SEARCH: return new SearchCommand();
+            case UPDATE: return new UpdateCommand();
+            case REMOVE: return new RemoveCommand();
+            case DONE:
+            case EXIT: return new ExitCommand();
         }
 
         return null;
+    }
+
+    public AbstractCommand getNextCommand() {
+        storeManager.nextLine();
+        Command command = Command.fromString(storeManager.commandArr()[0]);
+        return getCommand(command);
     }
 }
