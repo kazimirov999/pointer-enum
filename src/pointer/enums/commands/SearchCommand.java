@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class SearchCommand extends AbstractCommand {
     @Override
     public void execute(StoreManager manager) {
-        if (!verify(manager))
+        if (verify(manager))
             return;
 
         ArrayList<Food> search = manager.doSearch();

@@ -1,18 +1,18 @@
 package pointer.enums.commands;
 
-import pointer.enums.foodstore.StoreManager;
+import pointer.enums.foodstore.CommandReader;
 
 public class CommandFactory {
-    private StoreManager storeManager;
+    private final CommandReader commandReader;
 
-    public CommandFactory(StoreManager manager) {
-        storeManager = manager;
+    public CommandFactory(CommandReader reader) {
+        this.commandReader = reader;
     }
 
     public AbstractCommand getCommand(Command command) {
         if (command == null){
-            System.out.println("Wrong command " + storeManager.commandArr()[0]);
-            storeManager.nextLine();
+            System.out.println("Wrong command " + commandReader.commandArr()[0]);
+            commandReader.nextLine();
             return  null;
         }
 
@@ -29,8 +29,8 @@ public class CommandFactory {
     }
 
     public AbstractCommand getNextCommand() {
-        storeManager.nextLine();
-        Command command = Command.fromString(storeManager.commandArr()[0]);
+        commandReader.nextLine();
+        Command command = Command.fromString(commandReader.commandArr()[0]);
         return getCommand(command);
     }
 }

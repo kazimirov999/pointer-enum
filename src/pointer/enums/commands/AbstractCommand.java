@@ -1,18 +1,19 @@
 package pointer.enums.commands;
 
+import pointer.enums.foodstore.CommandReader;
 import pointer.enums.foodstore.StoreManager;
 
 public abstract class AbstractCommand {
 
     public abstract void execute(StoreManager manager);
 
-    protected boolean verify(StoreManager storeManager) {
-         if (storeManager.commandArr().length == 1) {
+    boolean verify(CommandReader commandReader) {
+        if (commandReader.commandArr().length == 1) {
             System.out.println("No command parameters.");
-            storeManager.nextLine();
-            return false;
+            commandReader.nextLine();
+            return true;
         }
 
-         return true;
+        return false;
     }
 }

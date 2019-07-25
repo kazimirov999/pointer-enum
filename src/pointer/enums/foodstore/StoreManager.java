@@ -1,11 +1,12 @@
 package pointer.enums.foodstore;
 
-import pointer.enums.commands.*;
+import pointer.enums.commands.AbstractCommand;
+import pointer.enums.commands.Executor;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class StoreManager {
+public class StoreManager implements Executor, CommandReader {
     private Scanner scanner;
     private Store store;
     private String line;

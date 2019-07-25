@@ -6,7 +6,7 @@ public class Store {
     private String name;
     private ArrayList<Food> warehouse = new ArrayList<>();
 
-    public Store(String n) {
+    Store(String n) {
         name = n;
     }
 
@@ -18,13 +18,13 @@ public class Store {
         return warehouse;
     }
 
-    public void addFood(Food f) {
+    void addFood(Food f) {
         if (f != null) {
             warehouse.add(f);
         }
     }
 
-    public Food doSearch(String foodName) {
+    Food doSearch(String foodName) {
         for (Food f : warehouse) {
             if (f.getName().equals(foodName)){
                 return f;
@@ -34,7 +34,7 @@ public class Store {
         return null;
     }
 
-    public ArrayList<Food> doSearch(FoodType type) {
+    ArrayList<Food> doSearch(FoodType type) {
         ArrayList<Food> search = new ArrayList<>();
 
         for (Food f: warehouse) {
@@ -46,8 +46,8 @@ public class Store {
         return search;
     }
 
-    public void removeFood(Food f) {
-        if (f != null && warehouse.contains(f)) {
+    void removeFood(Food f) {
+        if (f != null) {
             warehouse.remove(f);
         }
     }
