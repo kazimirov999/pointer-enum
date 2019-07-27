@@ -3,49 +3,55 @@ package pointer.enums;
 import pointer.enums.commands.AbstractCommand;
 import pointer.enums.commands.Command;
 import pointer.enums.commands.CommandFactory;
+import pointer.enums.commands.CommandReader;
+import pointer.enums.foodstore.FoodType;
 import pointer.enums.foodstore.StoreManager;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        final StoreManager storeManager = new StoreManager(new Scanner(System.in));
-        final CommandFactory commandFactory = new CommandFactory(storeManager);
+        CommandReader reader = new CommandReader(new Scanner(System.in));
+        StoreManager storeManager = new StoreManager();
+        CommandFactory commandFactory = new CommandFactory(storeManager, reader);
 
         System.out.println("Type 'exit' for close app");
-        System.out.println("Type a store name:");
 
-        AbstractCommand initStoreCommand = new AbstractCommand() {
+        AbstractCommand initStoreCommand = new AbstractCommand(storeManager, reader) {
             @Override
-            public void execute(StoreManager manager) {
-                manager.nextLine();
-                Command command = Command.fromString(manager.commandArr()[0]);
+            public void execute() {
+                System.out.println("Type a store name:");
+                reader.nextLine();
+                Command command = Command.fromString(reader.commandArr()[0]);
 
                 if (Command.EXIT == command) {
-                    manager.execute(commandFactory.getCommand(Command.EXIT));
+                    manager.executeCommand(commandFactory.getCommand(Command.EXIT));
                 } else {
-                    manager.setStore();
+                    manager.setStore(reader.getLine());
                 }
             }
         };
 
-        AbstractCommand fillInStoreCommand = new AbstractCommand() {
+        AbstractCommand fillInStoreCommand = new AbstractCommand(storeManager, reader) {
             @Override
-            public void execute(StoreManager manager) {
-                manager.nextLine();
-                Command command = Command.fromString(manager.commandArr()[0]);
+            public void execute() {
+                System.out.println("Food types: " + Arrays.toString(FoodType.values()) +
+                        "\nUse 'done' when finish. \nUse add <food type> <food name> <price> <quantity>:");
+                reader.nextLine();
+                Command command = Command.fromString(reader.commandArr()[0]);
 
                 while (Command.DONE != command) {
-                    manager.execute(commandFactory.getCommand(command));
-                    manager.nextLine();
-                    command = Command.fromString(manager.commandArr()[0]);
+                    manager.executeCommand(commandFactory.getCommand(command));
+                    reader.nextLine();
+                    command = Command.fromString(reader.commandArr()[0]);
                 }
             }
         };
 
-        storeManager.execute(initStoreCommand);
-        storeManager.execute(fillInStoreCommand);
+        storeManager.executeCommand(initStoreCommand);
+        storeManager.executeCommand(fillInStoreCommand);
 
         System.out.println("Use add <food type> <food name> <price> <quantity>.\nUse 'search <food type> or <food name> for displaying all food with type.\nUse 'update <food name> <price> <quantity> for changing food'\nUse rm <food name> for removing from the store.");
         AbstractCommand command = commandFactory.getNextCommand();
@@ -57,7 +63,7 @@ public class Main {
                 continue;
             }
 
-            storeManager.execute(command);
+            storeManager.executeCommand(command);
             command = commandFactory.getNextCommand();
         }
     }

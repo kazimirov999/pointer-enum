@@ -1,20 +1,12 @@
 package pointer.enums.foodstore;
 
 import pointer.enums.commands.AbstractCommand;
-import pointer.enums.commands.Executor;
+import pointer.enums.commands.Invoker;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class StoreManager implements Executor, CommandReader {
-    private Scanner scanner;
+public class StoreManager implements Invoker {
     private Store store;
-    private String line;
-    private FoodStoreFactory storeFactory = new FoodStoreFactory();
-
-    public StoreManager(Scanner scanner) {
-        this.scanner = scanner;
-    }
 
     public Store getStore() {
         return store;
@@ -24,32 +16,32 @@ public class StoreManager implements Executor, CommandReader {
         this.store = store;
     }
 
-    public void setStore() {
-        this.store = storeFactory.getStore(line);
-    }
-
-    public String nextLine() {
-        return (line = scanner.nextLine());
-    }
-
-    public String[] commandArr() {
-        return line.split(" ");
-    }
-
-    public void execute(AbstractCommand command) {
-        if (command != null) {
-            command.execute(this);
+    public void setStore(String storeName) {
+        if (storeName != null && storeName != "") {
+            this.store = new Store(storeName);
         }
     }
 
-    public ArrayList<Food> doSearch() {
+    public void executeCommand(AbstractCommand command) {
+        if (command != null) {
+            command.execute();
+        }
+    }
+
+    public Food addFood(FoodType type, String name, float price, int quantity) {
+        Food food = new Food(name, type, price, quantity);
+        store.addFood(food);
+        return food;
+    }
+
+    public ArrayList<Food> doSearch(String searchWord) {
         ArrayList<Food> search = new ArrayList<>();
 
-        if (FoodType.isType(commandArr()[1])) {
-            FoodType type = FoodType.fromString(commandArr()[1]);
+        if (FoodType.isType(searchWord)) {
+            FoodType type = FoodType.fromString(searchWord);
             search = store.doSearch(type);
         } else {
-            Food food = store.doSearch(commandArr()[1]);
+            Food food = store.doSearch(searchWord);
 
             if (food != null)
                 search.add(food);
@@ -58,24 +50,21 @@ public class StoreManager implements Executor, CommandReader {
         return search;
     }
 
-    public void updateFood() {
-        Food food = store.doSearch(commandArr()[1]);
-        storeFactory.updateFood(food, commandArr());
+    public void updateFood(String name, float price, int quantity) {
+        Food food = store.doSearch(name);
+
+        if (food == null) {
+            System.out.println("Food store has no product with name: " + name);
+            return;
+        }
+
+        food.setPrice(price);
+        food.setQuantity(quantity);
     }
 
-    public Food addFood() {
-        Food food = storeFactory.getFood(commandArr());
-        store.addFood(food);
-        return food;
-    }
-
-    public Food removeFood() {
-        Food food = store.doSearch(commandArr()[1]);
+    public Food removeFood(String name) {
+        Food food = store.doSearch(name);
         store.removeFood(food);
         return food;
-    }
-
-    public void close() {
-        scanner.close();
     }
 }
