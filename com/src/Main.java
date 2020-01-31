@@ -10,9 +10,9 @@ public class Main {
         System.out.println(" Hello, you are in our fruit shop and we have:  ");
         Shop.giveFruits();
         System.out.println("Write your choice");
-        String writeFruits = str.nextLine();
+        String writeFruit = str.nextLine();
         str.close();
-        Shop.showYourFruit(Shop.valueOf(writeFruits));
+        Shop.showYourFruit(Shop.valueOf(writeFruit.toUpperCase()));
 
 
     }
